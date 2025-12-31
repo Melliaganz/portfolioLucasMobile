@@ -81,7 +81,7 @@ export default function App() {
                 <Contact />
               </View>
 
-              {/* <Footer /> */}
+              <Footer />
             </Suspense>
           </ScrollView>
         </KeyboardAvoidingView>
