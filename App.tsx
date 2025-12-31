@@ -1,5 +1,5 @@
 import React, { Suspense, lazy, useRef } from "react";
-import { StyleSheet, ScrollView, ActivityIndicator, View } from "react-native";
+import { ScrollView, ActivityIndicator, View, KeyboardAvoidingView, Platform } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { styles } from "./styles/app.styles";
@@ -42,45 +42,49 @@ export default function App() {
     <SafeAreaProvider>
       <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
         <StatusBar style="light" />
+        
         <Suspense fallback={null}>
           <Header onNavigate={scrollToSection} />
         </Suspense>
 
-        <ScrollView 
-          ref={scrollRef} 
-          showsVerticalScrollIndicator={false}
-          scrollEventThrottle={16}
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : undefined}
+          style={{ flex: 1 }}
+          keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
         >
-          <Suspense
-            fallback={
-              <View style={styles.center}>
-                <ActivityIndicator size="large" color="#135bec" />
-              </View>
-            }
+          <ScrollView 
+            ref={scrollRef} 
+            showsVerticalScrollIndicator={false}
+            scrollEventThrottle={16}
+            keyboardShouldPersistTaps="handled"
           >
-            <View
-              onLayout={(e) => handleLayout("hero", e.nativeEvent.layout.y)}
+            <Suspense
+              fallback={
+                <View style={styles.center}>
+                  <ActivityIndicator size="large" color="#135bec" />
+                </View>
+              }
             >
-              <Hero onNavigate={scrollToSection} />
-            </View>
-            <View
-              onLayout={(e) => handleLayout("about", e.nativeEvent.layout.y)}
-            >
-              <Parcours />
-            </View>
-            <View
-              onLayout={(e) => handleLayout("projects", e.nativeEvent.layout.y)}
-            >
-              <Projects />
-            </View>
-            <View
-              onLayout={(e) => handleLayout("contact", e.nativeEvent.layout.y)}
-            >
-              <Contact />
-            </View>
-            <Footer />
-          </Suspense>
-        </ScrollView>
+              <View onLayout={(e) => handleLayout("hero", e.nativeEvent.layout.y)}>
+                <Hero onNavigate={scrollToSection} />
+              </View>
+
+              <View onLayout={(e) => handleLayout("about", e.nativeEvent.layout.y)}>
+                <Parcours />
+              </View>
+
+              <View onLayout={(e) => handleLayout("projects", e.nativeEvent.layout.y)}>
+                <Projects />
+              </View>
+
+              <View onLayout={(e) => handleLayout("contact", e.nativeEvent.layout.y)}>
+                <Contact />
+              </View>
+
+              {/* <Footer /> */}
+            </Suspense>
+          </ScrollView>
+        </KeyboardAvoidingView>
       </SafeAreaView>
     </SafeAreaProvider>
   );
