@@ -2,12 +2,15 @@ import React, { useMemo } from "react";
 import { View, Text, TouchableOpacity, Image, Dimensions } from "react-native";
 import { TechStack } from "../components/TechStack";
 import { techNames } from "../utils/techData";
-
 import { styles } from "../styles/hero.styles";
 
 const { width } = Dimensions.get("window");
 
-export const Hero = () => {
+interface HeroProps {
+  onNavigate: (href: string) => void;
+}
+
+export const Hero = ({ onNavigate }: HeroProps) => {
   const displayedSkills = useMemo(
     () =>
       techNames
@@ -42,11 +45,17 @@ export const Hero = () => {
         <TechStack />
 
         <View style={styles.buttonGroup}>
-          <TouchableOpacity style={styles.btnPrimary}>
+          <TouchableOpacity 
+            style={styles.btnPrimary} 
+            onPress={() => onNavigate('projects')}
+          >
             <Text style={styles.btnTextPrimary}>Voir mes projets</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.btnSecondary}>
+          <TouchableOpacity 
+            style={styles.btnSecondary} 
+            onPress={() => onNavigate('contact')}
+          >
             <Text style={styles.btnTextSecondary}>Me contacter</Text>
           </TouchableOpacity>
         </View>

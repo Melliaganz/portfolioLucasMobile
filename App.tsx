@@ -61,7 +61,7 @@ export default function App() {
             <View
               onLayout={(e) => handleLayout("hero", e.nativeEvent.layout.y)}
             >
-              <Hero />
+              <Hero onNavigate={scrollToSection} />
             </View>
             <View
               onLayout={(e) => handleLayout("about", e.nativeEvent.layout.y)}
